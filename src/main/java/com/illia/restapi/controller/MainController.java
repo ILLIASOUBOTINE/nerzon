@@ -40,15 +40,15 @@ public class MainController {
             summary = "создает нового котика",
             description = "Собиарет DTO котика и билдером собирает и сохраняет сущность в бд"
     )
-    @PostMapping("/add")
-    public void add(@RequestBody CatDTO catDTO) {
 
-        log.info("New row{}", catRepository.save(
+    @PostMapping("/add")
+    public Cat add(@RequestBody CatDTO catDTO) {
+        return catRepository.save(
                 Cat.builder()
                         .name(catDTO.getName())
                         .age(catDTO.getAge())
                         .weight(catDTO.getWeight())
-                        .build()));
+                        .build());
     }
 
     @GetMapping()
@@ -67,13 +67,11 @@ public class MainController {
 
     @PutMapping("/update")
     public String update(@RequestBody Cat cat) {
-       if(catRepository.existsById(cat.getId())) {
-           catRepository.save(cat);
-           return "Cat updated successfully";
-       } else {
+       if(!catRepository.existsById(cat.getId())) {
            return "Cat does not exist";
        }
 
+        return catRepository.save(cat).toString();
     }
 
 }
