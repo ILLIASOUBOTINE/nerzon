@@ -4,8 +4,10 @@ package com.illia.restapi.controller;
 import com.illia.restapi.dto.CatDTO;
 import com.illia.restapi.entity.Cat;
 import com.illia.restapi.repository.CatRepository;
+import com.illia.restapi.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,8 @@ import java.util.List;
 public class MainController {
 
     private final CatRepository catRepository;
+
+    private final EmailService emailService;
 
     @GetMapping("/all")
     public List<Cat> getAll() {
@@ -76,4 +80,11 @@ public class MainController {
 
     }
 
+    @PostMapping("/send")
+    public String sendEmail(@RequestParam String to,
+                            @RequestParam String subject,
+                            @RequestParam String text) throws MessagingException {
+        emailService.sendEmail(to, subject, text);
+        return "Email sent successfully";
+    }
 }
