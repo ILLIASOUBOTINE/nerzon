@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: ilya
+      changes:
+        - insert:
+            tableName: pics
+            columns:
+              - column:
+                  name: name
+                  value: 'Vovka'
+              - column:
+                  name: weight
+                  valueNumeric: 58
+      rollback:
+        - delete:
+            tableName: pics
+            where: name = 'Vovka'
